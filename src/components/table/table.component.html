@@ -1,0 +1,90 @@
+<p-toast />
+<p-toolbar styleClass="mb-1 gap-2 custom-toolbar-table">
+    <ng-template pTemplate="left">
+        <ng-container *ngIf="selectedRows.length > 0">
+            <p-button [severity]="isTrash ? 'primary' : 'info'" label="{{isTrash ? 'Khôi phục' : 'Sửa'}}"
+                [icon]="isTrash ? 'bi bi-recycle' : 'bi bi-pencil-square'"
+                (onClick)="bindAction(isTrash ? 'restore' : 'edit')"
+                [disabled]="!selectedRows || !selectedRows.length || selectedRows.length >= 2" />
+            <p-button [severity]="isTrash ? 'danger' : 'warning'" label="{{isTrash ? 'Xóa vĩnh viễn' : 'Thùng rác'}}"
+                [icon]="isTrash ? 'bi bi-trash3-fill' : 'bi bi-trash2-fill'"
+                (onClick)="bindAction(isTrash ? 'delete' : 'trash')"
+                [disabled]="!selectedRows || !selectedRows.length" />
+        </ng-container>
+    </ng-template>
+
+    <ng-template *ngIf="search" pTemplate="right">
+        <div class="search">
+            <input (input)="onFilterGlobal($event)" type="text" placeholder="Tìm kiếm..." />
+            <div class="symbol">
+                <!-- Cloud Icon -->
+                <svg class="cloud" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path
+                        d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4z" />
+                </svg>
+                <!-- Lens Icon -->
+                <svg class="lens" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M15.656,13.692l-3.257-3.229c2.087-3.079,1.261-7.252-1.845-9.321c-3.106-2.068-7.315-1.25-9.402,1.83
+                  s-1.261,7.252,1.845,9.32c1.123,0.748,2.446,1.146,3.799,1.142c1.273-0.016,2.515-0.39,3.583-1.076l3.257,3.229
+                  c0.531,0.541,1.404,0.553,1.95,0.025c0.009-0.008,0.018-0.017,0.026-0.025C16.112,15.059,16.131,14.242,15.656,13.692z M2.845,6.631
+                  c0.023-2.188,1.832-3.942,4.039-3.918c2.206,0.024,3.976,1.816,3.951,4.004c-0.023,2.171-1.805,3.918-3.995,3.918
+                  C4.622,10.623,2.833,8.831,2.845,6.631L2.845,6.631z" />
+                </svg>
+            </div>
+        </div>
+        <div class="trash">
+            <div *ngIf="!isTrash" class="symbol" (click)="toggleViewTrashOrList('view-trash')">
+                <!-- Cloud Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="cloud" viewBox="0 0 16 16">
+                    <path
+                        d="M2.037 3.225A.7.7 0 0 1 2 3c0-1.105 2.686-2 6-2s6 .895 6 2a.7.7 0 0 1-.037.225l-1.684 10.104A2 2 0 0 1 10.305 15H5.694a2 2 0 0 1-1.973-1.671zm9.89-.69C10.966 2.214 9.578 2 8 2c-1.58 0-2.968.215-3.926.534-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466-.18-.14-.498-.307-.975-.466z" />
+                </svg>
+                <!-- Lens Icon -->
+                <svg class="lens" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path
+                        d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.5.5 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244z" />
+                </svg>
+            </div>
+
+            <div *ngIf="isTrash" class="symbol" (click)="toggleViewTrashOrList('view-list')">
+                <svg class="cloud" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5" />
+                    <path
+                        d="M2.242 2.194a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.256-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.28.28 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.27.27 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.28.28 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.27.27 0 0 0 .259-.194z" />
+                </svg>
+                <svg class="lens" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path
+                        d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0" />
+                </svg>
+            </div>
+        </div>
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt styleClass="custom-scroll-table" [scrollable]="true" scrollHeight="68vh" [value]="dataAfterHandle"
+    (onRowSelect)="onSelectRow($event)" [selectionMode]="'multiple'" (onRowUnselect)="onSelectRow($event)"
+    [globalFilterFields]="globalFilterArgs" [(selection)]="selectedRows" [rowHover]="true" [paginator]="pagination"
+    [rows]="rows" [first]="first" [rowsPerPageOptions]="rowsPerPageOptions" (onPage)="pageChange($event)"
+    currentPageReportTemplate="Hiển thị {first} - {last} tổng {totalRecords} items"
+    [showCurrentPageReport]="showCurrentPageReport">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+            <th *ngFor="let col of cols; let i = index" pSortableColumn="{{col?.name}}" [ngStyle]="styleColumn(col)">
+                {{col?.title}} <p-sortIcon field="{{col?.name}}" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dataAfterHandle>
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="dataAfterHandle" />
+            </td>
+            <td *ngFor="let value of objectValues(dataAfterHandle); let i = index" [ngStyle]="styleColumn(cols[i])">
+                {{value}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-confirmDialog [style]="{ width: '450px' }" />

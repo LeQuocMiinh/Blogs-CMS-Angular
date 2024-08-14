@@ -1,0 +1,86 @@
+<div class="sidebar {{toggleMenuDefault && 'close'}}">
+    <div class="logo-details">
+        <div class="icon d-flex align-items-center gap-1">
+            <img width="24" height="24" src="/assets/img/logo.svg" alt="">
+            <span style="line-height: normal;" class="logo_name">Blog anythings</span>
+        </div>
+        <div (click)="onToggleMenu()" class="toggle-menu"><i
+                [style.transform]="(toggleMenuDefault) ? 'rotate(-180deg)' : ''" class='bx bx-chevrons-left'></i></div>
+    </div>
+    <ul class="nav-links">
+        <li class="{{currentRoute == 'dashboard'  ? 'active' : ''}}">
+            <a routerLink="/dashboard">
+                <i class='bx bx-grid-alt'></i>
+                <span class="link_name">Tổng quan</span>
+            </a>
+        </li>
+        <li class="{{currentRoute == 'category'  ? 'active' : ''}}">
+            <div class="iocn-link">
+                <a routerLink="/category">
+                    <i class='bx bx-collection'></i>
+                    <span class="link_name">Danh mục</span>
+                </a>
+            </div>
+        </li>
+        <li class="{{currentRoute == 'post'  ? 'active' : ''}}">
+            <div class="iocn-link">
+                <a href="#">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="link_name">Bài viết</span>
+                </a>
+            </div>
+        </li>
+        <li class="{{currentRoute == 'tag'  ? 'active' : ''}}">
+            <a href="#">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="link_name">Thẻ</span>
+            </a>
+        </li>
+        <li class="{{currentRoute == 'user'  ? 'active' : ''}}">
+            <a href="#">
+                <i class='bx bx-line-chart'></i>
+                <span class="link_name">Tài khoản</span>
+            </a>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a href="#">
+                    <i class='bx bx-plug'></i>
+                    <span class="link_name">Plugins</span>
+                </a>
+            </div>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-compass'></i>
+                <span class="link_name">Explore</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-history'></i>
+                <span class="link_name">History</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-cog'></i>
+                <span class="link_name">Setting</span>
+            </a>
+        </li>
+        <li>
+            <div class="profile-details">
+                <div class="wrapper">
+                    <div class="profile-content">
+                        <i class='bx bxs-user-account'></i>
+                    </div>
+                    <div class="name-job">
+                        <div class="profile_name">{{user.name}}</div>
+                        <div class="job">{{user.email}}</div>
+                    </div>
+                    <i class='bx bx-log-out'></i>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

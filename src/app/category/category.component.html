@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-4">
+        <div class="create-category">
+            <h3 class="title"><i class="bi bi-plus-circle-dotted"></i> Thêm danh mục</h3>
+            <form [formGroup]="form">
+                <div class="group d-flex gap-2">
+                    <label style="flex: 1 0 30%;" for="title">Tên danh mục:</label>
+                    <input style="flex: 1 0 70%;" formControlName="title" id="title" aria-describedby="title-help" />
+                </div>
+                <div class="group d-flex gap-2">
+                    <label style="flex: 1 0 30%;" for="username">Là con thuộc:</label>
+                    <div style="flex: 1 0 70%;">
+                        <p-dropdown [options]="categoriesOption" formControlName="parent" placeholder="Chọn danh mục"
+                            [editable]="true" optionLabel="name" />
+                    </div>
+                </div>
+                <div class="group d-flex  gap-2">
+                    <label style="flex: 1 0 30%;">Mô tả:</label>
+                    <div style="flex: 1 0 70%;">
+                        <textarea formControlName="description" rows="5" cols="30">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="group d-flex  gap-2">
+                    <label style="flex: 1 0 30%;">Hình ảnh:</label>
+                    <div style="flex: 1 0 70%;">
+                        <p-fileUpload (onSelect)="onFileSelect($event)" [multiple]="false" accept="image/*"
+                            maxFileSize="1000000">
+                            <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback"
+                                let-clearCallback="clearCallback">
+                                <p-button (onClick)="choose($event, chooseCallback)" icon="bi bi-card-image"
+                                    [rounded]="true" [outlined]="true" />
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
+                </div>
+                <div class="group d-flex gap-2">
+                    <button (click)="submit()" [disabled]="form.invalid" class="default">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="list-category">
+            <h3 class="title"><i class="{{introduce.icon}}"></i> {{introduce.title}}</h3>
+            <div class="list-wrapper">
+                <app-table [pagination]="true" [search]="true" [stt]="true" [cols]="columns" [data]="categories"
+                    (actionHandle)="receivedActionHandle($event)"></app-table>
+            </div>
+        </div>
+    </div>
+</div>
