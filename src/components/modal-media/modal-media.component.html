@@ -1,0 +1,41 @@
+<section class="modal-media">
+    <div class="wrapper">
+        <div class="content">
+            <div class="list-media w-100">
+                <ng-container *ngIf="images.length > 0">
+                    <div *ngFor="let item of images; let i = index" class="item">
+                        <ng-container *ngIf="typeChecked === 'radio'; else checkbox">
+                            <p-radioButton [name]="item?.display_name" [value]="item" [(ngModel)]="selectedImages" />
+                        </ng-container>
+                        <ng-template #checkbox>
+                            <p-checkbox (onChange)="onSelectImages($event, i)" [name]="item?.display_name"
+                                [value]="item" />
+                        </ng-template>
+                        <p-image [src]="item?.secure_url" [alt]="item?.display_name" [preview]="true" />
+                    </div>
+                </ng-container>
+            </div>
+            <div class="btn-container d-flex align-items-center justify-content-between">
+                <div (click)="triggerFileUpload()" class="brow w-auto">
+                    <i class="bi bi-upload"></i> Tải hình ảnh
+                </div>
+                <p-fileUpload class="d-none" #fileUpload [multiple]="true" accept="image/*" maxFileSize="1000000"
+                    (onSelect)="onSelectedFiles($event)">
+                    <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback"
+                        let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+                        <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+                            <div class="flex gap-2">
+                                <p-button (click)="chooseCallback()" icon="pi pi-images" [rounded]="true"
+                                    [outlined]="true"></p-button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="button-cancel" (click)="onCancel()">Huỷ</button>
+                    <button class="default w-auto" (click)="submit()">Chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

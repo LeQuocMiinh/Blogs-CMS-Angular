@@ -1,0 +1,83 @@
+<section class="post-detail">
+    <div class="wrapper">
+        <div class="heading d-flex align-items-center justify-content-between mb-3">
+            <h2>{{introduceOption.heading}}</h2>
+            <div class="redirect-to-list-of-post">
+                <i class='bx bx-undo'></i>
+                <a routerLink="/post">Trở lại</a>
+            </div>
+        </div>
+
+        <div [formGroup]="form" class="post-detail-body">
+            <div class="row">
+                <div class="col-10">
+                    <div class="d-flex flex-column gap-4">
+                        <div class="title-editor w-100 ">
+                            <h5>Tiêu đề</h5>
+                            <input formControlName="title" type="text" pInputText />
+                        </div>
+                        <div class="content-editor">
+                            <h5>Nội dung</h5>
+                            <p-editor formControlName="content" [style]="{ height: '600px' }" />
+                        </div>
+                        <div class="short-description">
+                            <h5>Mô tả ngắn</h5>
+                            <textarea formControlName="description" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <nav class="sidebar d-flex flex-column gap-3">
+                        <div class="category w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
+                            <h5>Ảnh đại diện</h5>
+                            <ng-container *ngIf="imageSelected != ''; else chooseImage">
+                                <div class="img-container overflow-hidden" style="flex: 0 0 70%;">
+                                    <img [src]="imageSelected" alt="">
+                                    <i (click)="removeImage()" class="bi bi-x-lg"></i>
+                                </div>
+                            </ng-container>
+                            <ng-template #chooseImage>
+                                <button style="flex: 0 0 70%; border: 1px solid #d1d5db; outline: none; height: 32.5px;"
+                                    class="btn-info p-1 rounded-2 bg-white" (click)="openModalMedia()">Chọn
+                                    hình
+                                    ảnh</button>
+                            </ng-template>
+                        </div>
+                        <div class="category w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
+                            <h5>Danh mục</h5>
+                            <div class="d-flex flex-wrap gap-3">
+                                <ng-container *ngFor="let category of categories; let i = index">
+                                    <p-checkbox formControlName="category" label="{{category?.title}}"
+                                        name="{{category?.title}}" value="{{category?._id}}" />
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="category w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
+                            <h5>Thẻ</h5>
+                            <div class="d-flex flex-wrap gap-3">
+                                <ng-container *ngFor="let tag of tags; let i = index">
+                                    <p-checkbox formControlName="tag" label="{{tag?.title}}" name="{{tag?.title}}"
+                                        value="{{tag?._id}}" />
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="information w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
+                            <div class="item createdAt d-flex gap-2 flex-column">
+                                <span class="fw-bold"><i class="bi bi-calendar"></i> Ngày đăng: </span>
+                                <span class="fw-normal"> {{currentDate}}</span>
+                            </div>
+                            <div class="item status d-flex gap-2 flex-column">
+                                <span class="fw-bold"><i class="bi bi-calendar3-week"></i> Trạng thái: </span>
+                                <p-dropdown formControlName="status" [options]="status" optionLabel="name"
+                                    placeholder="Chọn trạng thái" />
+                            </div>
+                            <button [disabled]="form.invalid" (click)="submit()"
+                                class="button-default mt-5">{{introduceOption.textBtn}}</button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-toast />

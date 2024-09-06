@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
     imports: [
         InputGroupModule,
@@ -23,6 +25,9 @@ import { TableModule } from 'primeng/table';
         InputTextModule,
         FileUploadModule,
         TableModule,
+        ToastModule,
+        ConfirmDialogModule,
+
     ],
 
     exports: [
@@ -37,6 +42,8 @@ import { TableModule } from 'primeng/table';
         InputTextModule,
         FileUploadModule,
         TableModule,
+        ToastModule,
+        ConfirmDialogModule,
     ],
     providers: [MessageService]
 })

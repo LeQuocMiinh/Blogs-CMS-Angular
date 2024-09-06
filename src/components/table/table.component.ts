@@ -57,7 +57,6 @@ export class TableComponent {
     this.globalFilterArgs = this.cols.map((col: any) => { return col.name });
     const displayColumn = (this.stt) ? 'auto' : 'none';
     this.cols.unshift({ title: 'STT', name: 'stt', width: '6rem', align: 'center', display: displayColumn });
-
   }
 
   /**
@@ -72,11 +71,8 @@ export class TableComponent {
 
       for (let index = 0; index < this.globalFilterArgs.length; index++) {
         let key = this.globalFilterArgs[index];
-        if (key in item) {
-          newItem[key] = item[key]; // lấy dữ liệu theo key của column
-        }
+        newItem[key] = item[key]; // lấy dữ liệu theo key của column
       };
-
       // Kiểm tra và thực thi render cho mỗi cột
       for (let j = 0; j < this.cols.length; j++) {
         let col = this.cols[j];
@@ -87,7 +83,7 @@ export class TableComponent {
           }
         }
       }
-      newItem = { stt: index + 1, ...newItem }
+      newItem = { stt: index + 1, ...newItem };
       return newItem;
     });
   }
@@ -172,6 +168,8 @@ export class TableComponent {
       'margin': column.margin || undefined,
       'cursor': column.action ? 'pointer' : 'auto',
       'display': column.display || 'auto',
+      'height': column.height || 'auto',
+      'overflow': column.overflow || undefined
     }
     return styles;
   }

@@ -1,4 +1,3 @@
-<p-toast />
 <p-toolbar styleClass="mb-1 gap-2 custom-toolbar-table">
     <ng-template pTemplate="left">
         <ng-container *ngIf="selectedRows.length > 0">
@@ -81,9 +80,18 @@
             <td>
                 <p-tableCheckbox [value]="dataAfterHandle" />
             </td>
-            <td *ngFor="let value of objectValues(dataAfterHandle); let i = index" [ngStyle]="styleColumn(cols[i])">
-                {{value}}</td>
+            <td *ngFor="let value of objectValues(dataAfterHandle); let i = index" [ngStyle]="styleColumn(cols[i])"
+                [ngClass]="cols[i].name">
+                <span [innerHTML]="value"></span>
+            </td>
         </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <ng-container *ngIf="dataAfterHandle.length == 0">
+            <tr>
+                <td class=" text-center" colspan="12">Không có dữ liệu</td>
+            </tr>
+        </ng-container>
     </ng-template>
 </p-table>
 

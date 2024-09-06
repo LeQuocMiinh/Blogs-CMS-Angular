@@ -143,3 +143,25 @@
     }
 
 }
+
+::ng-deep {
+    p-table {
+        .p-datatable-table {
+            .description {
+                display: -webkit-box;
+                margin: 1rem;
+                padding: 0;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    p-dropdown .p-dropdown {
+        ul {
+            padding: 0;
+        }
+    }
+}

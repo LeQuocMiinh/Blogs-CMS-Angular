@@ -1,0 +1,80 @@
+.post-detail {
+    overflow: hidden;
+
+    .heading {
+        .redirect-to-list-of-post {
+            cursor: pointer;
+            height: 45px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #6f42c1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            gap: 6px;
+            transition: all .3s linear;
+
+            &:hover {
+                background: rgb(20, 136, 156);
+            }
+        }
+    }
+
+    .post-detail-body {
+        .title-editor {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .sidebar {
+            .img-container {
+                position: relative;
+                aspect-ratio: 4/2;
+                border-radius: 8px;
+
+                i {
+                    cursor: pointer;
+                    position: absolute;
+                    z-index: 1;
+                    background: #ffff;
+                    color: red;
+                    right: 0.5rem;
+                    top: 0.5rem;
+                    padding: 6px;
+                    font-size: 20px;
+                    border-radius: 8px;
+                    font-weight: bold;
+                }
+
+                img {
+                    object-fit: cover;
+                    border-radius: 8px;
+                    width: 100%;
+                }
+            }
+        }
+
+
+    }
+
+
+}
+
+::ng-deep {
+    p-dropdown .p-dropdown {
+        ul {
+            padding: 0;
+        }
+    }
+}

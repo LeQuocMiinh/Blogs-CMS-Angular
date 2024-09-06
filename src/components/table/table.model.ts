@@ -18,4 +18,6 @@ export interface ColumnInterface {
     minWidth?: string,
     action?: string,
     display?: string,
+    height?: string,
+    overflow?: string
 }
