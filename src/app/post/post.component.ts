@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { CategoryService } from './category.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Loading } from 'src/libs/loading';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ModalMediaComponent } from 'src/components/modal-media/modal-media.component';
-import { ParamCreateCategory } from './category.model';
+import { Loading } from 'src/libs/loading';
+import { PostService } from './post.service';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss'],
-  providers: [CategoryService, DialogService]
+  selector: 'app-post',
+  templateUrl: './post.component.html',
+  styleUrls: ['./post.component.scss'],
+  providers: [PostService, MessageService, ConfirmationService, DialogService, DatePipe]
 })
-export class CategoryComponent {
+export class PostComponent {
   loading: Loading = new Loading();
   form!: FormGroup;
   show: boolean = true;
   columns: any[] = [];
-  categories: any[] = [];
-  categoriesOptionSelect: any[] = [];
+  posts: any[] = [];
   imageSelected: string = '';
   uploadedFiles: any[] = [];
   istrash: boolean = false;
@@ -36,20 +36,27 @@ export class CategoryComponent {
   };
   ref: DynamicDialogRef | undefined;
   typeChecked: string = 'radio';
+  status = [
+    { name: "Công khai", value: 'published' },
+    { name: "Bản nháp", value: 'draft' },
+    { name: "Riêng tư", value: 'privated' }
+  ];
 
   constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private categoryService: CategoryService,
-    private fb: FormBuilder,
-    private dialogService: DialogService
+    public messageService: MessageService,
+    public confirmationService: ConfirmationService,
+    public postService: PostService,
+    public fb: FormBuilder,
+    public dialogService: DialogService,
+    public datePipe: DatePipe,
+    public router: Router,
   ) {
     this.initForm();
     this.initColumn();
   }
 
   async ngOnInit() {
-    await this.getAllCategories();
+    await this.getAllPosts();
   }
 
 
@@ -67,12 +74,26 @@ export class CategoryComponent {
    */
   async initColumn() {
     this.columns = [
-      { title: 'Tên', name: 'title', align: 'center' },
-      { title: 'Mô tả', name: 'description', align: 'center', width: '20rem' },
+      { title: 'Tên', name: 'title', align: 'center', width: '20rem' },
+      { title: 'Mô tả ngắn', name: 'description', align: 'center' },
       {
-        title: 'Danh mục cha', name: 'parent', align: 'center', render: ({ parent }: any) => {
-          if (parent) {
-            return !parent.deleted ? parent.title : '---';
+        title: 'Ngày tạo', name: 'createdAt', align: 'center', width: '15rem', render: ({ createdAt }: any) => {
+          if (createdAt) {
+            return this.datePipe.transform(createdAt, 'dd/MM/yyyy');
+          }
+          return '---';
+        }
+      },
+      {
+        title: 'Số lượt xem', name: 'view', align: 'center', width: '10rem', render: ({ view }: any) => {
+          return '---';
+        }
+      },
+      {
+        title: 'Trạng thái', name: 'status', align: 'center', width: '10rem', render: ({ status }: any) => {
+          if (status) {
+            const value: any = this.status.find(e => { return e.value === status });
+            return value.name;
           }
           return '---';
         }
@@ -80,33 +101,23 @@ export class CategoryComponent {
     ];
   }
 
-  /**
-   * Lấy tất cả danh mục
-   */
-  async getAllCategories(trash: boolean = false) {
-    this.loading.setLoading(true);
-    const res: any = await this.categoryService.getAllCategories();
-    const originData = res.data.filter((item: any) => !item.deleted);
-    this.categories = res.data.filter((item: any) => trash ? item.deleted : !item.deleted);
-    this.categoriesOptionSelect = originData.map((item: any) => {
-      return {
-        name: item.title,
-        id: item._id,
-      }
-    });
-    this.loading.setLoading(false);
+  getSeverity(severity: 'published' | 'draft' | 'privated') {
+    const summaryVietnamese = {
+      published: "success",
+      draft: "warning",
+      privated: "danger"
+    };
+    return summaryVietnamese[severity];
   }
 
   /**
-   * Lấy chi tiết của 1 danh mục
-   * @param id 
-   * @returns 
+   * Lấy tất cả danh mục
    */
-  async getDetailCategory(id: any) {
+  async getAllPosts(trash: boolean = false) {
     this.loading.setLoading(true);
-    const res = await this.categoryService.getDetailCategory(id);
+    const res: any = await this.postService.getAllPosts();
+    this.posts = res.data.filter((item: any) => trash ? item.deleted : !item.deleted);
     this.loading.setLoading(false);
-    return res;
   }
 
   /**
@@ -114,45 +125,19 @@ export class CategoryComponent {
    * @param data rows
    */
   async receivedActionHandle(data: any) {
-    this.actionHandleCategories(data.action, data.rows);
+    this.actionHandlePosts(data.action, data.rows);
     if (data.action == 'view-trash') {
       this.introduce = {
         icon: 'bi bi-trash2-fill',
         title: 'Thùng rác'
       }
-      this.getAllCategories(true);
+      this.getAllPosts(true);
     } else if (data.action == 'view-list') {
       this.introduce = {
         icon: 'bi bi-list',
         title: 'Danh sách danh mục'
       }
-      this.getAllCategories(false);
-    }
-  }
-
-  /**
-   * Lưu
-   */
-  async submit() {
-    this.loading.setLoading(true);
-    const formData: ParamCreateCategory = {
-      title: this.form.value.title,
-      description: this.form.value.description,
-      parent: this.form.value.parent?.id || null,
-      image: this.form.value.image || null
-    }
-    try {
-      let res;
-      if (this.isEdit) {
-        res = await this.categoryService.updateCategory(this.idEdit, formData);
-      } else {
-        res = await this.categoryService.createCategory(formData);
-      }
-      this.showMessage("success", res.message, { status: true, time: 600 });
-    } catch (error: any) {
-      this.showMessage("error", error.message, { status: true, time: 600 });
-    } finally {
-      this.loading.setLoading(false);
+      this.getAllPosts(false);
     }
   }
 
@@ -162,7 +147,7 @@ export class CategoryComponent {
    * @param action 
    * @param data 
    */
-  async actionHandleCategories(action: string, data: any) {
+  async actionHandlePosts(action: string, data: any) {
     this.loading.setLoading(true);
     try {
       const ids = data.map((e: any) => e._id);
@@ -180,21 +165,7 @@ export class CategoryComponent {
    * @param data 
    */
   async actionEdit(data: any) {
-    const row = data[0];
-    this.isEdit = true;
-    if (row.image) {
-      this.imageSelected = row.image;
-    }
-    this.form.patchValue(row);
-    this.idEdit = row._id;
-    if (row.parent) {
-      const objParent = row.parent.deleted ? null : {
-        id: row.parent?._id,
-        name: row.parent?.title,
-      };
-
-      this.form.get('parent')?.setValue(objParent);
-    }
+    this.router.navigate(['post/' + data[0]._id])
   }
 
   /**
@@ -202,7 +173,7 @@ export class CategoryComponent {
    * @param ids 
    */
   async actionRestore(ids: Array<any>) {
-    await this.categoryService.restoreCategories(ids).then(res => {
+    await this.postService.restorePosts(ids).then((res: any) => {
       this.showMessage("success", res.message, { status: true, time: 600 });
     }).catch(error => {
       this.showMessage("error", error.message, { status: true, time: 600 });
@@ -214,11 +185,12 @@ export class CategoryComponent {
    * @param ids 
    */
   async actionTrash(ids: Array<any>) {
-    await this.categoryService.trashCategories(ids).then(res => {
+    await this.postService.trashPosts(ids).then((res: any) => {
       this.showMessage("success", res.message, { status: true, time: 600 });
     }).catch(error => {
       this.showMessage("error", error.message, { status: true, time: 600 });
     });
+
   }
 
   /**
@@ -227,14 +199,14 @@ export class CategoryComponent {
    */
   async actionDelete(ids: Array<any>) {
     this.confirmationService.confirm({
-      message: 'Xác nhận xóa vĩnh viễn danh mục này?',
+      message: 'Xác nhận xóa vĩnh viễn bài viết này?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
       rejectButtonStyleClass: "p-button-text",
       accept: async () => {
-        await this.categoryService.deleteCategories(ids).then(res => {
+        await this.postService.deletePosts(ids).then((res: any) => {
           this.showMessage("success", res.message, { status: true, time: 600 });
         }).catch(error => {
           this.showMessage("error", error.message, { status: true, time: 600 });
@@ -244,20 +216,11 @@ export class CategoryComponent {
   }
 
   /**
-   * Xóa ảnh
-   */
-  async removeImage() {
-    this.imageSelected = '';
-    this.form.get('image')?.setValue(this.imageSelected);
-  }
-
-  /**
    * Hủy hành động sửa
    */
   async cancelEdit() {
     this.isEdit = false;
     this.form.reset();
-    this.removeImage();
   }
 
   /**
@@ -280,25 +243,5 @@ export class CategoryComponent {
     }
   }
 
-  /**
-   * Mở modal hình ảnh 
-   */
-  async openModalMedia() {
-    this.ref = this.dialogService.open(ModalMediaComponent, {
-      header: 'Hình ảnh',
-      width: '50vw',
-      contentStyle: { overflow: 'auto' },
-      data: {
-        typeChecked: this.typeChecked
-      }
-    });
-
-    this.ref.onClose.subscribe(res => {
-      if (res) {
-        this.imageSelected = res.secure_url;
-        this.form.get('image')?.setValue(this.imageSelected);
-      }
-    })
-  }
 
 }

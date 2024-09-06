@@ -14,6 +14,14 @@
                 <span class="link_name">Tổng quan</span>
             </a>
         </li>
+        <li class="{{currentRoute == 'post'  ? 'active' : ''}}">
+            <div class="iocn-link">
+                <a routerLink="/post">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="link_name">Bài viết</span>
+                </a>
+            </div>
+        </li>
         <li class="{{currentRoute == 'category'  ? 'active' : ''}}">
             <div class="iocn-link">
                 <a routerLink="/category">
@@ -22,45 +30,29 @@
                 </a>
             </div>
         </li>
-        <li class="{{currentRoute == 'post'  ? 'active' : ''}}">
+        <li class="{{currentRoute == 'tag'  ? 'active' : ''}}">
             <div class="iocn-link">
-                <a href="#">
-                    <i class='bx bx-book-alt'></i>
-                    <span class="link_name">Bài viết</span>
+                <a routerLink="/tag">
+                    <i class="bi bi-bookmarks"></i>
+                    <span class="link_name">Thẻ</span>
                 </a>
             </div>
         </li>
-        <li class="{{currentRoute == 'tag'  ? 'active' : ''}}">
-            <a href="#">
-                <i class='bx bx-pie-chart-alt-2'></i>
-                <span class="link_name">Thẻ</span>
-            </a>
+        <li class="{{currentRoute == 'media'  ? 'active' : ''}}">
+            <div class="iocn-link">
+                <a routerLink="/media">
+                    <i class="bi bi-image"></i>
+                    <span class="link_name">Hình ảnh</span>
+                </a>
+            </div>
         </li>
         <li class="{{currentRoute == 'user'  ? 'active' : ''}}">
-            <a href="#">
-                <i class='bx bx-line-chart'></i>
-                <span class="link_name">Tài khoản</span>
-            </a>
-        </li>
-        <li>
             <div class="iocn-link">
-                <a href="#">
-                    <i class='bx bx-plug'></i>
-                    <span class="link_name">Plugins</span>
+                <a routerLink="/user">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <span class="link_name">Tài khoản</span>
                 </a>
             </div>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-compass'></i>
-                <span class="link_name">Explore</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-history'></i>
-                <span class="link_name">History</span>
-            </a>
         </li>
         <li>
             <a href="#">

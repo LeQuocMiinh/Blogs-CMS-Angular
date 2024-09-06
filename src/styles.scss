@@ -1,4 +1,7 @@
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+// import Quill styles in styles.scss
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
 
 :root {
     --main-bg: #f5f5f5;
@@ -6,6 +9,7 @@
     --second-color-text: #f5f5f5;
     --main-bg-button: linear-gradient(90deg, rgba(14, 68, 172, 1) 0%, rgba(31, 78, 205, 1) 35%, rgba(0, 172, 255, 1) 100%);
     --hover-bg-button: linear-gradient(-90deg, rgba(14, 68, 172, 1) 0%, rgba(31, 78, 205, 1) 35%, rgba(0, 172, 255, 1) 100%);
+    --bg-button-confirm-deleted: linear-gradient(-90deg, rgba(254, 100, 101, 1) 0%, rgba(245, 0, 0, 1) 100%);
 }
 
 [data-theme="dark"] {
@@ -27,7 +31,28 @@ body {
     background: var(--main-bg) !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    overflow: hidden;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-image: -webkit-gradient(linear,
+                left bottom,
+                left top,
+                color-stop(0.44, rgb(153, 180, 234)),
+                color-stop(0.72, rgb(95, 146, 208)),
+                color-stop(0.86, rgb(51, 86, 190)));
+    }
 }
 
 body,
@@ -48,6 +73,11 @@ textarea {
     margin: 0 auto;
 }
 
+img {
+    width: 100%;
+    height: auto;
+}
+
 input,
 textarea {
     border: none;
@@ -59,8 +89,67 @@ textarea {
     border-radius: 8px;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 #nprogress .bar {
     background: var(--main-bg-button);
+}
+
+.p-confirm-dialog {
+    width: 480px;
+}
+
+p-fileupload {
+    .p-fileupload {
+        .p-fileupload-content {
+
+            .item-upload-file {
+                gap: 12px;
+
+                img {
+                    flex: 1 0 calc(30% - 6px);
+                    border-radius: 6px;
+                    width: 30%;
+                    height: 100%;
+                }
+
+                .left {
+                    flex: 1 0 calc(70% - 6px);
+                }
+
+                span {
+                    overflow: hidden;
+                    display: -webkit-box;
+                    text-overflow: ellipsis;
+                    -webkit-box-orient: vertical;
+                }
+
+                p-button {
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+                }
+
+                .p-button {
+                    padding: 0;
+                    border: none;
+                    border-radius: 12px;
+                    background: transparent;
+                    outline: none;
+
+                    span {
+                        font-size: 24px;
+                        color: #ef4444;
+                    }
+
+
+                }
+            }
+        }
+    }
 }
 
 button.default {
@@ -107,6 +196,86 @@ button.default {
     }
 }
 
+/* BUTTON DEFAULT */
+.button-cancel {
+    padding: 8px 12px;
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+    border-radius: 10px;
+    display: inline-flex;
+    font-weight: 600;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+}
+
+.button-cancel:hover,
+.button-cancel:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.button-cancel:hover {
+    transform: translateY(-1px);
+}
+
+.button-cancel:active {
+    background-color: #F0F0F1;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: rgba(0, 0, 0, 0.65);
+    transform: translateY(0);
+}
+
+.button-default {
+    padding: 15px 30px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    border-radius: 10px;
+    display: block;
+    border: 0px;
+    font-weight: 700;
+    box-shadow: 0px 0px 14px -7px #f09819;
+    background-image: var(--main-bg-button);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+
+    &.confirm-deleted {
+        background-image: var(--bg-button-confirm-deleted);
+    }
+}
+
+.bg-confirm-deleted {
+    background: var(--bg-button-confirm-deleted);
+}
+
+.button-default:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.button-default:active {
+    transform: scale(0.95);
+}
+
 .p-inputtext:enabled:focus,
 .p-inputwrapper-filled:enabled:focus {
     box-shadow: unset;
@@ -118,6 +287,7 @@ button.default {
     box-shadow: unset;
 }
 
+/** TABLE */
 .custom-toolbar-table {
     padding: 8px;
     border: none;

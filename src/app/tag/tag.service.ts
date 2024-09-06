@@ -2,13 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ParamCreateCategory } from "./category.model";
+import { ParamCreateTag } from "./tag.model";
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class CategoryService {
+export class TagService {
     apiUrl: string = environment.apiUrl;
 
     constructor(
@@ -20,8 +20,8 @@ export class CategoryService {
      * Lấy tất cả danh mục
      * @returns 
      */
-    getAllCategories() {
-        return this.to(this.httpClient.get<any>(this.apiUrl + '/category/get-all'));
+    getAllTags() {
+        return this.to(this.httpClient.get<any>(this.apiUrl + '/tag/get-all'));
     }
 
     /**
@@ -29,8 +29,8 @@ export class CategoryService {
      * @param id 
      * @returns 
      */
-    getDetailCategory(id: any) {
-        return this.to(this.httpClient.get<any>(this.apiUrl + `/category/get-detail/${id}`));
+    getDetailTag(id: any) {
+        return this.to(this.httpClient.get<any>(this.apiUrl + `/tag/get-detail/${id}`));
     }
 
     /**
@@ -38,8 +38,8 @@ export class CategoryService {
      * @param params 
      * @returns 
      */
-    createCategory(params: ParamCreateCategory) {
-        return this.to(this.httpClient.post<any>(this.apiUrl + '/category/create', params));
+    createTag(params: ParamCreateTag) {
+        return this.to(this.httpClient.post<any>(this.apiUrl + '/tag/create', params));
     }
 
     /**
@@ -48,8 +48,8 @@ export class CategoryService {
      * @param params 
      * @returns 
      */
-    updateCategory(id: number, params: ParamCreateCategory) {
-        return this.to(this.httpClient.put<any>(this.apiUrl + `/category/update/${id}`, params));
+    updateTag(id: number, params: ParamCreateTag) {
+        return this.to(this.httpClient.put<any>(this.apiUrl + `/tag/update/${id}`, params));
     }
 
     /**
@@ -57,8 +57,8 @@ export class CategoryService {
      * @param ids 
      * @returns 
      */
-    trashCategories(ids: Array<any>) {
-        return this.to(this.httpClient.put<any>(this.apiUrl + '/category/trash/' + ids.join(), {}));
+    trashTags(ids: Array<any>) {
+        return this.to(this.httpClient.put<any>(this.apiUrl + '/tag/trash/' + ids.join(), {}));
     }
 
     /**
@@ -66,8 +66,8 @@ export class CategoryService {
      * @param ids 
      * @returns 
      */
-    restoreCategories(ids: Array<any>) {
-        return this.to(this.httpClient.put<any>(this.apiUrl + '/category/restore/' + ids.join(), {}));
+    restoreTags(ids: Array<any>) {
+        return this.to(this.httpClient.put<any>(this.apiUrl + '/tag/restore/' + ids.join(), {}));
     }
 
     /**
@@ -75,8 +75,8 @@ export class CategoryService {
      * @param ids 
      * @returns 
      */
-    deleteCategories(ids: Array<any>) {
-        return this.to(this.httpClient.delete<any>(this.apiUrl + '/category/delete/' + ids.join()));
+    deleteTags(ids: Array<any>) {
+        return this.to(this.httpClient.delete<any>(this.apiUrl + '/tag/delete/' + ids.join()));
     }
 
     /**

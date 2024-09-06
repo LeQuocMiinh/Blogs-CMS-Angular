@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoryRoutingModule } from './category-routing.module';
-import { CategoryComponent } from './category.component';
-import { SharedModule } from 'src/modules/shared.module';
+
+import { TagRoutingModule } from './tag-routing.module';
+import { TagComponent } from './tag.component';
 import { TableCustomerModule } from 'src/components/table/table.module';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DialogModule } from 'primeng/dialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ModalMediaModule } from 'src/components/modal-media/modal-media.module';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedModule } from 'src/modules/shared.module';
 
 @NgModule({
   declarations: [
-    CategoryComponent,
+    TagComponent
   ],
   imports: [
     CommonModule,
-    CategoryRoutingModule,
+    TagRoutingModule,
     SharedModule,
     TableCustomerModule,
     SkeletonModule,
@@ -26,4 +27,4 @@ import { ModalMediaModule } from 'src/components/modal-media/modal-media.module'
   ],
   providers: [MessageService, ConfirmationService]
 })
-export class CategoryModule { }
+export class TagModule { }

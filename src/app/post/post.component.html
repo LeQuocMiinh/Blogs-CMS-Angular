@@ -1,0 +1,36 @@
+<section class="post">
+    <div class="wrapper">
+        <div class="heading d-flex justify-content-between align-items-center mb-4">
+            <h2>Danh sách bài viết</h2>
+            <div class="action-add">
+                <i class="bi bi-plus-square"></i>
+                <a routerLink="/post/post-detail">Thêm bài viết</a>
+            </div>
+        </div>
+        <div class="table">
+            <app-table [pagination]="true" [search]="true" [stt]="true" [cols]="columns" [data]="posts"
+                (actionHandle)="receivedActionHandle($event)"></app-table>
+        </div>
+    </div>
+</section>
+<p-toast [life]="5000" />
+<p-confirmDialog #cd>
+    <ng-template pTemplate="headless" let-message>
+        <div class="d-flex flex-column align-items-center p-5 bg-light rounded">
+            <div class="rounded-circle bg-confirm-deleted d-flex justify-content-center align-items-center"
+                style="height: 6rem; width: 6rem;">
+                <i class="bi bi-exclamation-lg" style="font-size: 2.5rem; color: #fff;"></i>
+            </div>
+            <span class="fw-bold fs-4 my-3">
+                {{ message.header }}
+            </span>
+            <p class="mb-0">{{ message.message }}</p>
+            <div class="d-flex  gap-2 mt-4  w-100">
+                <button pButton label="Hủy" (click)="cd.reject()" class="button-cancel w-50"></button>
+                <button pButton label="Xác nhận" (click)="cd.accept()"
+                    class="button-default confirm-deleted w-50 "></button>
+            </div>
+        </div>
+
+    </ng-template>
+</p-confirmDialog>

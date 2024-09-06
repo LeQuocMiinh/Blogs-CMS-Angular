@@ -1,12 +1,7 @@
-export interface ModelCategoriesOption {
-    name: string;
-    id: string;
-}
-
 /**
  * Định nghĩa kiểu dữ liệu được trả về khi gọi api thành công
  */
-export interface DataGetAllCategories {
+export interface DataGetAllTags {
     title: string;
     parent: string;
     description: string;
@@ -17,9 +12,7 @@ export interface DataGetAllCategories {
     deleted: boolean;
 }
 
-export interface ParamCreateCategory {
+export interface ParamCreateTag {
     title: string;
     description: string;
-    parent: string;
-    image: string;
 }

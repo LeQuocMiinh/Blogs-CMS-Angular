@@ -1,0 +1,57 @@
+<div class="media">
+    <div class="heading d-flex justify-content-between align-items-center">
+        <h2>Quản lý hình ảnh</h2>
+        <p-button *ngIf="selectedImages.length > 0" (onClick)="deletedMedia()" class="trash-images"
+            [severity]="'danger'" label="Xóa" [icon]="'bi bi-trash3-fill'" />
+    </div>
+
+    <div class="media-body w-100">
+        <div class="wrapper">
+            <div class="upload-wrapper d-flex">
+                <div (click)="triggerFileUpload()" class="brow w-100">
+                    <i class="bi bi-upload"></i> Tải hình ảnh
+                </div>
+                <p-fileUpload class="d-none" #fileUpload [multiple]="true" accept="image/*" maxFileSize="1000000"
+                    (onSelect)="onSelectedFiles($event)">
+                    <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback"
+                        let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+                        <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+                            <div class="flex gap-2">
+                                <p-button (click)="chooseCallback()" icon="pi pi-images" [rounded]="true"
+                                    [outlined]="true"></p-button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
+            </div>
+            <div class="list-images w-100">
+                <div *ngFor="let item of images; let i = index" class="item">
+                    <p-checkbox (onChange)="onSelectImages($event, i)" [name]="item?.display_name" [value]="item" />
+                    <p-image [src]="item?.secure_url" [alt]="item?.display_name" [preview]="true" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast [life]="2000" />
+
+<p-confirmDialog #cd>
+    <ng-template pTemplate="headless" let-message>
+        <div class="d-flex flex-column align-items-center p-5 bg-light rounded">
+            <div class="rounded-circle bg-confirm-deleted d-flex justify-content-center align-items-center"
+                style="height: 6rem; width: 6rem;">
+                <i class="bi bi-exclamation-lg" style="font-size: 2.5rem; color: #fff;"></i>
+            </div>
+            <span class="fw-bold fs-4 my-3">
+                {{ message.header }}
+            </span>
+            <p class="mb-0">{{ message.message }}</p>
+            <div class="d-flex  gap-2 mt-4  w-100">
+                <button pButton label="Hủy" (click)="cd.reject()" class="button-cancel w-50"></button>
+                <button pButton label="Xác nhận" (click)="cd.accept()"
+                    class="button-default confirm-deleted w-50"></button>
+            </div>
+        </div>
+
+    </ng-template>
+</p-confirmDialog>

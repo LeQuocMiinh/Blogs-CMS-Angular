@@ -15,6 +15,18 @@ const routes: Routes = [
         loadChildren: () => import('./category/category.module').then(m => m.CategoryModule)
     },
     {
+        path: 'tag',
+        loadChildren: () => import('./tag/tag.module').then(m => m.TagModule)
+    },
+    {
+        path: 'media',
+        loadChildren: () => import('./media/media.module').then(m => m.MediaModule)
+    },
+    {
+        path: 'post',
+        loadChildren: () => import('./post/post.module').then(m => m.PostModule)
+    },
+    {
         path: '',
         redirectTo: 'login',
         pathMatch: 'full'

@@ -1,18 +1,11 @@
 <div class="row">
     <div class="col-4">
         <div class="create-category">
-            <h2 class="title"><i class="bi bi-plus-circle-dotted"></i> Thêm danh mục</h2>
+            <h2 class="title"><i class="bi bi-plus-circle-dotted"></i> Thêm thẻ</h2>
             <form [formGroup]="form">
                 <div class="group d-flex gap-2">
-                    <label style="flex: 0 0 30%;" for="title">Tên danh mục:</label>
+                    <label style="flex: 0 0 30%;" for="title">Tên thẻ:</label>
                     <input style="flex: 0 0 70%;" formControlName="title" id="title" aria-describedby="title-help" />
-                </div>
-                <div class="group d-flex gap-2">
-                    <label style="flex: 0 0 30%;" for="username">Là con thuộc:</label>
-                    <div style="flex: 0 0 70%;">
-                        <p-dropdown [options]="categoriesOptionSelect" formControlName="parent"
-                            placeholder="Chọn danh mục" [editable]="true" optionLabel="name" />
-                    </div>
                 </div>
                 <div class="group d-flex  gap-2">
                     <label style="flex: 0 0 30%;">Mô tả:</label>
@@ -21,21 +14,7 @@
                         </textarea>
                     </div>
                 </div>
-                <div class="group d-flex gap-2">
-                    <label style="flex: 0 0 30%;">Hình ảnh:</label>
-                    <ng-container *ngIf="imageSelected != ''; else chooseImage">
-                        <div class="img-container overflow-hidden" style="flex: 0 0 70%;">
-                            <img [src]="imageSelected" alt="">
-                            <i (click)="removeImage()" class="bi bi-x-lg"></i>
-                        </div>
-                    </ng-container>
-                    <ng-template #chooseImage>
-                        <button style="flex: 0 0 70%; border: 1px solid #d1d5db; outline: none; height: 32.5px;"
-                            class="btn-info p-1 rounded-2 bg-white" (click)="openModalMedia()">Chọn
-                            hình
-                            ảnh</button>
-                    </ng-template>
-                </div>
+
                 <div class="group d-flex gap-2">
                     <ng-container *ngIf="isEdit">
                         <button (click)="cancelEdit()" class="button-cancel">Hủy</button>
@@ -49,7 +28,7 @@
         <div class="list-category">
             <h2 class="title"><i class="{{introduce.icon}}"></i> {{introduce.title}}</h2>
             <div class="list-wrapper">
-                <app-table [pagination]="true" [search]="true" [stt]="true" [cols]="columns" [data]="categories"
+                <app-table [pagination]="true" [search]="true" [stt]="true" [cols]="columns" [data]="tags"
                     (actionHandle)="receivedActionHandle($event)"></app-table>
             </div>
         </div>
@@ -67,10 +46,10 @@
                 {{ message.header }}
             </span>
             <p class="mb-0">{{ message.message }}</p>
-            <div class="d-flex  gap-2 mt-4  w-100">
+            <div class="d-flex gap-2 mt-4 w-100 justify-content-between">
                 <button pButton label="Hủy" (click)="cd.reject()" class="button-cancel w-50"></button>
                 <button pButton label="Xác nhận" (click)="cd.accept()"
-                    class="button-default confirm-deleted w-50 "></button>
+                    class="button-default confirm-deleted w-50"></button>
             </div>
         </div>
 
