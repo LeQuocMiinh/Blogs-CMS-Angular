@@ -1,11 +1,15 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router, Event as NavigationEvent, NavigationStart } from '@angular/router';
 import { AppStorage } from 'src/libs/storage';
+import { MenuService } from './menu.service';
+import { LoginService } from 'src/app/auth/login/login.service';
+import { Loading } from 'src/libs/loading';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss'],
+  providers: [MenuService]
 })
 export class MenuComponent implements OnInit, OnDestroy {
   event$: any;
@@ -14,9 +18,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   @Output() toggleMenu = new EventEmitter<boolean>(false);
   toggleMenuDefault: boolean = false;
   currentRoute: string = 'dashboard';
-
+  loading: Loading = new Loading();
   constructor(
-    private router: Router
+    private router: Router,
+    public menuService: MenuService,
+    public loginService: LoginService
   ) {
     this.getCurrentRoute();
   }
@@ -66,4 +72,16 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  async logout() {
+    this.loading.setLoading(true);
+    this.menuService.logout([]).subscribe(res => {
+      if (res.status) {
+        this.storage.clear();
+        this.router.navigate(['/login']);
+        this.loginService.onLogged(false);
+      }
+      this.loading.setLoading(false);
+    });
+  }
 }

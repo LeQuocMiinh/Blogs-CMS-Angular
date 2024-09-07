@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { AppStorage } from 'src/libs/storage';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, of, take } from 'rxjs';
+import { Loading } from 'src/libs/loading';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { catchError, of } from 'rxjs';
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
+  loading: Loading = new Loading();
   form!: FormGroup;
   value: string = '';
   storage: AppStorage = new AppStorage();
@@ -19,13 +21,17 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public loginService: LoginService,
-    private router: Router
+    private router: Router,
   ) {
     this.initForm();
   }
 
   async ngOnInit() {
-    await this.autoLogin();
+
+  }
+
+  ngAfterViewInit(): void {
+    this.autoLogin();
   }
 
   /**
@@ -42,16 +48,16 @@ export class LoginComponent implements OnInit {
    * Login
    */
   async login() {
-    this.setLoading(true);
+    this.loading.setLoading(true);
     const data = this.form.value;
     await this.loginService.login(data).then(async res => {
       this.storage.setItem('access_token', res.accessToken);
-      this.loginService.fetchUser().subscribe(res => {
+      await this.loginService.fetchUser().subscribe(res => {
         this.storage.setItem('user', JSON.stringify(res.data));
       });
       this.loginService.onLogged(true);
       this.navigate('/dashboard');
-      this.setLoading(false);
+      this.loading.setLoading(false);
     }).catch(error => {
       throw error;
     });
@@ -61,31 +67,21 @@ export class LoginComponent implements OnInit {
    * Tự động login
    */
   async autoLogin() {
-    this.setLoading(true);
+    this.loading.setLoading(true);
     const access_token = this.storage.getItem('access_token');
     if (access_token) {
-      await this.loginService.fetchUser().pipe(
-        catchError(error => {
-          //Xử lý lỗi ở đây
-          return of(null);
-        })
-      ).subscribe(res => {
-        this.loginService.onLogged(true);
-        this.storage.setItem('user', JSON.stringify(res.data));
-        this.navigate('/dashboard');
-      });
+      this.loginService.fetchUser().subscribe(res => {
+        if (res) {
+          this.loginService.onLogged(true);
+          this.storage.setItem('user', JSON.stringify(res.data));
+          this.navigate('/dashboard');
+        }
+      })
     }
-    this.setLoading(false);
+    this.loading.setLoading(false);
   }
 
   navigate(url: string) {
     this.router.navigate([url]);
-  }
-
-  setLoading(value: boolean) {
-    const loadingHtml = document.getElementById('loading');
-    if (loadingHtml) {
-      loadingHtml.style.display = (value) ? 'flex' : 'none';
-    }
   }
 }
