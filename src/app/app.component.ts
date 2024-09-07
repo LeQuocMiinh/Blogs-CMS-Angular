@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from './auth/login/login.service';
 import { AppStorage } from 'src/libs/storage';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,10 @@ export class AppComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {
+    this.receivedLogged()
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.receivedLogged();
     this.fetchUser();
   }
@@ -35,7 +37,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async receivedLogged() {
+  receivedLogged() {
     this.loginService.currentData.subscribe(res => {
       this.logged = res;
     });

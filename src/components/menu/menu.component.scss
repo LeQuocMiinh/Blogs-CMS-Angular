@@ -117,10 +117,10 @@
                 &>a,
                 .iocn-link {
                     background: #fff;
-                }
 
-                i {
-                    color: #11101d;
+                    i {
+                        color: #11101d;
+                    }
                 }
 
                 a {
@@ -289,6 +289,12 @@
         .profile-content {
             display: flex;
             align-items: center;
+
+            i {
+                &:hover {
+                    color: #fff;
+                }
+            }
         }
 
         img {
