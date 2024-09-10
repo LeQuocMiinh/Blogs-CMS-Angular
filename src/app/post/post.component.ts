@@ -85,8 +85,8 @@ export class PostComponent {
         }
       },
       {
-        title: 'Số lượt xem', name: 'view', align: 'center', width: '10rem', render: ({ view }: any) => {
-          return '---';
+        title: 'Số lượt xem', name: 'views', align: 'center', width: '10rem', render: ({ views }: any) => {
+          return views > 0 ? views : '---';
         }
       },
       {
@@ -99,15 +99,6 @@ export class PostComponent {
         }
       }
     ];
-  }
-
-  getSeverity(severity: 'published' | 'draft' | 'privated') {
-    const summaryVietnamese = {
-      published: "success",
-      draft: "warning",
-      privated: "danger"
-    };
-    return summaryVietnamese[severity];
   }
 
   /**
