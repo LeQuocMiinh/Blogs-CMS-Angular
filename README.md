@@ -4,6 +4,13 @@ CMS Blogs is a full-stack web application for managing and displaying blog posts
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.7.
 
+Account Admin:
+
+username: admin@gmail.com
+
+password: minhcute123
+
+
 ## Introduce
 
 CMS (Content Management System)
