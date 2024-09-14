@@ -85,7 +85,7 @@ export class CategoryComponent {
    */
   async getAllCategories(trash: boolean = false) {
     this.loading.setLoading(true);
-    const res: any = await this.categoryService.getAllCategories();
+    const res: any = await this.categoryService.getAllCategories([]);
     const originData = res.data.filter((item: any) => !item.deleted);
     this.categories = res.data.filter((item: any) => trash ? item.deleted : !item.deleted);
     this.categoriesOptionSelect = originData.map((item: any) => {

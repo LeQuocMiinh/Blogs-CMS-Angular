@@ -23,9 +23,50 @@ CMS (Content Management System)
 
     User authentication with role-based access control for admin users.
 
+LOGIN PAGE: 
+
+![alt text](/src/assets/img/image.png)
+ 
+
+POST MANAGEMENT: 
+
+![alt text](/src/assets/img/image-1.png)
+
+![alt text](/src/assets/img/image-3.png)
+
+![alt text](/src/assets/img/image-2.png)
+
+
+CATEGORY MANAGEMENT: 
+
+![alt text](/src/assets/img/image-4.png)
+
+![alt text](/src/assets/img/image-5.png)
+
+
+TAG MANAGEMENT: 
+
+![alt text](/src/assets/img/image-6.png)
+
+![alt text](/src/assets/img/image-7.png)
+
+
+MEDIA MANAGEMENT: 
+
+![alt text](/src/assets/img/image-8.png)
+
+![alt text](/src/assets/img/image-9.png)
+
+
+DASHBOARD: COMMING SOON ...
+
+ACCOUNT: COMMING SOON ... 
+
+SETTING: COMMING SOON ...
+
 
 ## Run development
 
 Install Package: yarn install
 
-Run code: yarn devs
+Run Code: yarn dev

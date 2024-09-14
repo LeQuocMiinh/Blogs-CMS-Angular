@@ -65,17 +65,19 @@ export class PostDetailComponent extends ShowMessage {
     await this.getAllCategories();
     await this.getAllTags();
     this.activatedRoute.params.subscribe(async params => {
-      this.postId = params['id'];
-      this.isEdit = true;
-      const res: any = await this.getPostDetails(this.postId);
-      this.form.patchValue(res.data);
-      this.imageSelected = (res.data.image != null) ? res.data.image : '';
-      this.currentDate = this.datePipe.transform(res.data.createdAt, 'dd/MM/yyyy') || '';
-      const statusFromResponse = this.status.find(e => e.value === res.data.status);
-      this.form.get('status')?.patchValue(statusFromResponse);
-      this.introduceOption = {
-        heading: 'Sửa bài viết',
-        textBtn: 'Cập nhật'
+      if (params['id'] && params['id'] != 'post-detail') {
+        this.postId = params['id'];
+        this.isEdit = true;
+        const res: any = await this.getPostDetails(params['id']);
+        this.form.patchValue(res.data);
+        this.imageSelected = (res.data.image != null) ? res.data.image : '';
+        this.currentDate = this.datePipe.transform(res.data.createdAt, 'dd/MM/yyyy') || '';
+        const statusFromResponse = this.status.find(e => e.value === res.data.status);
+        this.form.get('status')?.patchValue(statusFromResponse);
+        this.introduceOption = {
+          heading: 'Sửa bài viết',
+          textBtn: 'Cập nhật'
+        }
       }
     })
   }
@@ -141,7 +143,7 @@ export class PostDetailComponent extends ShowMessage {
    */
   async getAllCategories() {
     this.loading.setLoading(true);
-    const res: any = await this.categoryService.getAllCategories();
+    const res: any = await this.categoryService.getAllCategories([]);
     this.categories = res.data.filter((item: any) => !item.deleted);
     this.loading.setLoading(false);
   }

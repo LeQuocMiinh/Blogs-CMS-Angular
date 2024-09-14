@@ -106,7 +106,7 @@ export class PostComponent {
    */
   async getAllPosts(trash: boolean = false) {
     this.loading.setLoading(true);
-    const res: any = await this.postService.getAllPosts();
+    const res: any = await this.postService.getAllPosts([]);
     this.posts = res.data.filter((item: any) => trash ? item.deleted : !item.deleted);
     this.loading.setLoading(false);
   }
