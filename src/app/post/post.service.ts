@@ -17,8 +17,8 @@ export class PostService {
 
     }
 
-    getAllPosts() {
-        return this.to(this.httpClient.get<any>(this.apiUrl + '/posts/get-posts-by-filter'));
+    getAllPosts(params: any) {
+        return this.to(this.httpClient.post<any>(this.apiUrl + '/posts/get-posts-by-filter', params));
     }
 
     getPostDetails(id: string) {

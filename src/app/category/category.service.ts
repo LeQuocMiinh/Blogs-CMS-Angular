@@ -20,8 +20,8 @@ export class CategoryService {
      * Lấy tất cả danh mục
      * @returns 
      */
-    getAllCategories() {
-        return this.to(this.httpClient.get<any>(this.apiUrl + '/category/get-all'));
+    getAllCategories(params: any) {
+        return this.to(this.httpClient.post<any>(this.apiUrl + '/category/get-all', params));
     }
 
     /**
