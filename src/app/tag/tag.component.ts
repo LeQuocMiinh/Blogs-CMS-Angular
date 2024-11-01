@@ -54,8 +54,6 @@ export class TagComponent {
     this.form = this.fb.group({
       title: [null, Validators.required],
       description: [null, Validators.required],
-      parent: [null],
-      image: [null]
     })
   }
 
@@ -104,6 +102,12 @@ export class TagComponent {
    * Lưu
    */
   async submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.showMessage("error", "Vui lòng điền đầy đủ!", { status: false, time: 0 });
+      return;
+    }
+
     this.loading.setLoading(true);
     const formData = this.form.value;
     try {

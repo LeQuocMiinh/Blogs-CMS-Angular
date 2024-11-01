@@ -1,4 +1,4 @@
-<section class="modal-media">
+<section class="modal-media" id="modal-media">
     <div class="wrapper">
         <div class="content">
             <div class="list-media w-100">
@@ -11,7 +11,7 @@
                             <p-checkbox (onChange)="onSelectImages($event, i)" [name]="item?.display_name"
                                 [value]="item" />
                         </ng-template>
-                        <p-image [src]="item?.secure_url" [alt]="item?.display_name" [preview]="true" />
+                        <p-image loading="lazy" [src]="item?.secure_url" [alt]="item?.display_name" [preview]="true" />
                     </div>
                 </ng-container>
             </div>

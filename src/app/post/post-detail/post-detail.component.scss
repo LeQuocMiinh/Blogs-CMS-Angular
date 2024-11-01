@@ -77,4 +77,29 @@
             padding: 0;
         }
     }
+
+    .tag,
+    .category {
+        p-checkbox {
+            .p-checkbox {
+                position: relative !important;
+                z-index: 2;
+                top: unset !important;
+                right: unset !important;
+                width: 26px;
+
+                &.p-checkbox-checked {
+                    .p-checkbox-box {
+                        background: #3B82F6;
+                    }
+                }
+
+                .p-checkbox-box {
+                    width: 26px;
+                    height: 26px;
+                    background: transparent;
+                }
+            }
+        }
+    }
 }

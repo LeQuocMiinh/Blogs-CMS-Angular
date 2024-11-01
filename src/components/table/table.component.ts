@@ -17,6 +17,8 @@ export class TableComponent {
   @Input() pagination: boolean = false;
   @Input() first: number = 0;
   @Input() rows: number = 5;
+  @Input() onCheckboxRow: boolean = true;
+  @Input() onTrash: boolean = true;
   @Output() actionHandle = new EventEmitter<any>();
 
   isTrash: boolean = false;
