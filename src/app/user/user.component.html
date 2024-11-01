@@ -1,0 +1,11 @@
+<section class="user">
+    <div class="wrapper">
+        <div class="heading mb-4">
+            <h2>Danh sách người dùng</h2>
+        </div>
+        <div class="table">
+            <app-table [pagination]="true" [search]="true" [onTrash]="false" [stt]="true" [onCheckboxRow]="false"
+                [cols]="columns" [data]="usersList"></app-table>
+        </div>
+    </div>
+</section>

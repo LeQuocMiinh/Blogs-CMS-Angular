@@ -134,7 +134,7 @@ export class PostComponent {
 
 
   /**
-   * Sửa, xóa danh mục
+   * Sửa, xóa bài viết
    * @param action 
    * @param data 
    */

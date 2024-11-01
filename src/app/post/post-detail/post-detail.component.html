@@ -14,15 +14,21 @@
                     <div class="d-flex flex-column gap-4">
                         <div class="title-editor w-100 ">
                             <h5>Tiêu đề</h5>
-                            <input formControlName="title" type="text" pInputText />
+                            <input
+                                [ngClass]="{'ng-invalid ng-dirty': form.get('title')?.invalid && form.get('title')?.touched}"
+                                formControlName="title" type="text" pInputText />
                         </div>
                         <div class="content-editor">
                             <h5>Nội dung</h5>
-                            <p-editor formControlName="content" [style]="{ height: '600px' }" />
+                            <p-editor
+                                [ngClass]="{'ng-invalid ng-dirty': form.get('content')?.invalid && form.get('content')?.touched}"
+                                formControlName="content" [style]="{ height: '600px' }" />
                         </div>
                         <div class="short-description">
                             <h5>Mô tả ngắn</h5>
-                            <textarea formControlName="description" rows="5"></textarea>
+                            <textarea
+                                [ngClass]="{'ng-invalid ng-dirty': form.get('description')?.invalid && form.get('description')?.touched}"
+                                pInputTextarea formControlName="description" rows="5"></textarea>
                         </div>
                     </div>
                 </div>
@@ -52,7 +58,7 @@
                                 </ng-container>
                             </div>
                         </div>
-                        <div class="category w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
+                        <div class="tag w-100 bg-white p-4 rounded-2 d-flex flex-column gap-3">
                             <h5>Thẻ</h5>
                             <div class="d-flex flex-wrap gap-3">
                                 <ng-container *ngFor="let tag of tags; let i = index">
@@ -71,8 +77,7 @@
                                 <p-dropdown formControlName="status" [options]="status" optionLabel="name"
                                     placeholder="Chọn trạng thái" />
                             </div>
-                            <button [disabled]="form.invalid" (click)="submit()"
-                                class="button-default mt-5">{{introduceOption.textBtn}}</button>
+                            <button (click)="submit()" class="button-default mt-5">{{introduceOption.textBtn}}</button>
                         </div>
                     </nav>
                 </div>

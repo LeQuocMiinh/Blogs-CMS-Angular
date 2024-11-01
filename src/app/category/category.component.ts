@@ -134,6 +134,12 @@ export class CategoryComponent {
    * Lưu
    */
   async submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.showMessage("error", "Vui lòng điền đầy đủ!", { status: false, time: 0 });
+      return;
+    }
+
     this.loading.setLoading(true);
     const formData: ParamCreateCategory = {
       title: this.form.value.title,
@@ -287,6 +293,8 @@ export class CategoryComponent {
     this.ref = this.dialogService.open(ModalMediaComponent, {
       header: 'Hình ảnh',
       width: '50vw',
+      modal: true,
+      styleClass: 'modal-media-category',
       contentStyle: { overflow: 'auto' },
       data: {
         typeChecked: this.typeChecked
