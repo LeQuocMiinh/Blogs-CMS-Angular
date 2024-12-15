@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { AppStorage } from 'src/libs/storage';
 import { LoginService } from '../auth/login/login.service';
 import { Router } from '@angular/router';
+import { DashboardService } from './dashboard.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,16 +18,60 @@ export class DashboardComponent {
   optionsPopularPost: any;
   dataAccessSource: any;
   optionsAccessSource: any;
+  idsPostsMostViews: any[] = [];
+  isLoading: boolean = false;
+  months: any[] = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    public dashboardService: DashboardService
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.fetchUser();
-    this.createChartPopularPost();
-    this.createChartSourceAccess();
+    await Promise.all([
+      await this.getPostsMostViews(2, 'recent'),
+      await this.createPieChartStorageMedia(),
+    ]).then(() => { this.isLoading = true });
+  }
+
+  /**
+   * Lấy các vài viết có lượt xem nhiều nhất
+   * @param nums 
+   * @param option 
+   */
+  async getPostsMostViews(nums: number, option: string) {
+    const params = {
+      nums: nums,
+      option: option
+    };
+    await this.dashboardService.getPostsMostViews(params).then((res: any) => {
+      this.idsPostsMostViews = res.data.map((e: any) => { return { id: e._id, title: e.title } });
+    });
+
+    await this.getDataViewsByPostId(this.idsPostsMostViews);
+  }
+
+  async getDataViewsByPostId(ids: any[]) {
+    let data: any[] = [];
+    await Promise.all(ids.map(async (item: any) => {
+      const params = {
+        id: item?.id,
+        option: "day"
+      };
+      data.push(await this.dashboardService.getDataViewsByPostId(params).then((res: any) => {
+        if (res.status) {
+          return {
+            title: item?.title,
+            id: res.postId,
+            data: res.data,
+          }
+        }
+        return [];
+      }));
+    }))
+    this.createChartPopularPost(data[0], data[1]);
   }
 
   fetchUser() {
@@ -35,26 +81,30 @@ export class DashboardComponent {
     }
   }
 
-  createChartPopularPost() {
+  /**
+   * Tạo biểu đồ bài viết phổ biến 
+   * @param post_1 
+   * @param post_2 
+   */
+  createChartPopularPost(post_1: any, post_2: any) {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
     this.dataPopularPost = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: this.months,
       datasets: [
         {
-          label: 'My First dataset',
+          label: post_1.title,
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           borderColor: documentStyle.getPropertyValue('--blue-500'),
-          data: [65, 59, 80, 81, 56, 55, 40]
+          data: this.handleDataPopularMost(post_1)
         },
         {
-          label: 'My Second dataset',
+          label: post_2.title,
           backgroundColor: documentStyle.getPropertyValue('--pink-500'),
           borderColor: documentStyle.getPropertyValue('--pink-500'),
-          data: [28, 48, 40, 19, 86, 27, 90]
+          data: this.handleDataPopularMost(post_2)
         }
       ]
     };
@@ -96,15 +146,35 @@ export class DashboardComponent {
     };
   }
 
-  createChartSourceAccess() {
+  /**
+   * Xử lý dữ liệu 
+   * @param data 
+   * @returns 
+   */
+  handleDataPopularMost(data: any) {
+    const source = data.data;
+    const monthlyData = Array(12).fill(0);
+
+    source.forEach((item: any) => {
+      const date = new Date(item.date);
+      const monthIndex = date.getMonth();
+      monthlyData[monthIndex] += item.views;
+    });
+    return this.months.map((month, index) => (
+      monthlyData[index] || 0
+    ));
+  }
+
+
+  async createPieChartStorageMedia() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-
+    const dataBefore = await this.getStorageMedia();
     this.dataAccessSource = {
-      labels: ['A', 'B', 'C'],
+      labels: ['Đã sử dụng', 'Còn trống'],
       datasets: [
         {
-          data: [540, 325, 702],
+          data: dataBefore,
           backgroundColor: [documentStyle.getPropertyValue('--blue-500'), documentStyle.getPropertyValue('--yellow-500'), documentStyle.getPropertyValue('--green-500')],
           hoverBackgroundColor: [documentStyle.getPropertyValue('--blue-400'), documentStyle.getPropertyValue('--yellow-400'), documentStyle.getPropertyValue('--green-400')]
         }
@@ -123,8 +193,7 @@ export class DashboardComponent {
     };
   }
 
-
-  getPostViewsTop() {
-
+  async getStorageMedia() {
+    return await this.dashboardService.getStorageMedia().then((res: any) => { return res.status ? res.data : [] });
   }
 }

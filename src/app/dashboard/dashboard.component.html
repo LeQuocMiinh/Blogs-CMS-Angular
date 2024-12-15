@@ -1,17 +1,38 @@
 <div class="row mt-4">
-    <div class="col-6">
-        <h5>Lưu lượng truy cập người dùng</h5>
-        <p-chart type="line" [data]="dataPopularPost" [options]="optionsPopularPost" />
-    </div>
-    <div class="col-6">
-        <h5>Biểu đồ bài viết phổ biến nhất</h5>
-        <p-chart type="bar" [data]="dataPopularPost" [options]="optionsPopularPost" />
+    <div class="col-12">
+        <h5 class="mb-4">Biểu đồ bài viết phổ biến nhất</h5>
+        <p-chart *ngIf="isLoading" type="bar" [data]="dataPopularPost" [options]="optionsPopularPost" />
+
+        <div *ngIf="!isLoading" class="skeleton-chart">
+            <div class="d-flex flex-column">
+                <div class="d-flex skeleton-vertical">
+                    <div class="w-100 d-flex justify-content-between align-items-end">
+                        <p-skeleton height="20rem" width="5rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                        <p-skeleton height="15rem" width="3rem" styleClass="mb-2" />
+                    </div>
+                </div>
+                <p-skeleton height="3rem" styleClass="mb-2" />
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div class="row mt-4">
+<div class="row mt-5">
+    <h5 class="mb-4">Lưu lượng hình ảnh</h5>
     <div class="col-6 d-flex align-items-center justify-content-between">
-        <p-chart type="pie" [data]="dataAccessSource" [options]="optionsAccessSource" />
-        <p-chart type="pie" [data]="dataAccessSource" [options]="optionsAccessSource" />
+        <p-chart *ngIf="isLoading" type="pie" [data]="dataAccessSource" [options]="optionsAccessSource" />
+        <p-skeleton *ngIf="!isLoading" shape="circle" size="19rem" />
     </div>
 </div>
