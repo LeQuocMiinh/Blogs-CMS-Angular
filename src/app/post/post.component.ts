@@ -24,7 +24,7 @@ export class PostComponent {
   istrash: boolean = false;
   introduce = {
     icon: 'bi bi-list',
-    title: 'Danh sách danh mục'
+    title: 'Danh sách bài viết'
   };
   isEdit: boolean = false;
   idEdit: number = 0;
@@ -126,7 +126,7 @@ export class PostComponent {
     } else if (data.action == 'view-list') {
       this.introduce = {
         icon: 'bi bi-list',
-        title: 'Danh sách danh mục'
+        title: 'Danh sách bài viết'
       }
       this.getAllPosts(false);
     }
